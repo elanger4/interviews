@@ -23,7 +23,37 @@ int knows(int celeb, int person) {
     return knowsPerson[celeb][person];
 }
 
-int findCelebrity(int n) {
+// 2 * N
+int findCelebrity2(int n) {
+    if(n < 2)	return -1;
+
+    //Initialize celebrity with first person
+    int celebrityIDIndex = 0;
+    int curCheckPerson = 1;
+
+    while(curCheckPerson < n) {
+        if(knows(celebrityIDIndex, curCheckPerson)) {
+            //If celebrityIDIndex person knows curCheckPerson, celebrityIDIndex
+            //person is not the celebrity. Remove it and reset with curCheckPerson
+            celebrityIDIndex = curCheckPerson;
+        }
+
+        ++curCheckPerson;
+    }
+
+    //celebrityIDIndex maybe the celebrity, let's check whether everyone knows it..
+    for(int i = 0; i < n; i++) {
+        if(i == celebrityIDIndex) continue;
+        if(knows(i, celebrityIDIndex) || !knows(celebrityIDIndex, i))
+            return 0; //he knows someone, so there is no such celebrity.
+    }
+
+    //celebrityIDIndex person indeed does not know anyone, so he is the celebrity.
+    return 1;
+}
+
+// N*N
+int findCelebrity1(int n) {
 
     // 'i' is the potential celebrity
     int celebCount = 0;
@@ -82,13 +112,14 @@ int main() {
     knowsPerson[3][2] = 0;
     knowsPerson[3][3] = 1;
     knowsPerson[3][4] = 1;
-    knowsPerson[4][0] = 0;
-    knowsPerson[4][1] = 0;
+    knowsPerson[4][0] = 1;
+    knowsPerson[4][1] = 1;
     knowsPerson[4][2] = 0;
     knowsPerson[4][3] = 0;
     knowsPerson[4][4] = 0;
 
-    assert(findCelebrity(5) == 1);
+    assert(findCelebrity1(5) == 0);
+    assert(findCelebrity2(5) == 0);
 
-    std::cout << "\n Passed Test Case!" << std::endl;
+    std::cout << "\n Passed Test Cases!" << std::endl;
 }
