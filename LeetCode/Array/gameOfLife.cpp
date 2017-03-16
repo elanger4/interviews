@@ -12,4 +12,31 @@
 // Could you solve it in-place? Remember that the board needs to be updated at the same time: You cannot update some cells first and then use their updated values to update other cells.
 // In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches the border of the array. How would you address these problems?
 
+int ** nextState(int ** board, int n, int m) {
+    int ** newState = board;
 
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            int numNeighbors = 0;
+            for (int row = -1; i <= 1; ++i) {
+                for (int col = -1; j <= 1; ++j) {
+                    if (i + row <= n-1 && i + row >= 0 && j + col <= m-1 && j + col >= 0) {
+                       numNeighbors += 1; 
+                    }
+                }
+            }
+            if (numNeighbors > 3 || numNeighbors < 2) {
+                newState[i][j] = 0;
+            } else if (numNeighbors == 3) {
+                newState[i][j] = 1;
+            }
+            // else numNeighbors == 2, alive cell will stay alive and dead cell
+            // will stay dead. No need to check for it.
+        }
+    }
+    return newState;
+}
+
+int main() {
+    return 0;
+}
