@@ -90,5 +90,8 @@ int main() {
         std::cout << std::endl;
     }
 
+    for (i = 0; i < n; ++i) {
+        free(board[i]); 
+    }
     free(board); 
 }
